@@ -1,0 +1,84 @@
+body{
+    background: grey;
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+header{
+    padding: 40px 80px;
+    background: black;
+    color:white;
+    text-align: center;
+    height: 100px;
+    background-image: url(images/bg.jpg);
+    background-size: 100%;
+    background-position: center;
+}
+header li a{
+    text-decoration:none;
+    color: black;
+}
+header .logo a{
+    background: red;
+    width: 120px;
+    height: 80px;
+    text-indent: -99999999px;
+    display: inline-block;
+    position: relative;
+    top: -30px;
+    background-image: url(images/logo.png);
+    background-size: 120px;
+    background-repeat: no-repeat;
+}
+
+div{
+    background: red;
+    margin: auto;
+    width: 100px;
+}
+footer{
+    color: white;
+    background: black;
+    padding: 10px 20px;
+}
+
+nav li{
+    display: inline;
+    margin-right: 90px;
+}
+nav ul{
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    
+}
+section{
+    background: white;
+    color: black;
+    padding: 20px;
+    display: flex;
+    flex-direction: row; 
+    
+}
+section figure {
+    text-align: center;
+    margin-left: 100px;
+    margin-right:150px;
+    display: inline-block;
+    position: relative;
+}
+section figure img{
+    position: relative;
+    bottom: 0;
+    
+}
+.macbook{
+    position: absolute;
+    bottom: -50%;
+}
+section figure figcaption{
+    position: absolute; 
+    bottom: 0;
+    left: 35%;
+}
+

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.edu.bupt.aircondition.mapper.AirConditionLogMapper">
+
+    <select id="getLogsByStartAndEnd" resultType="cn.edu.bupt.aircondition.entity.AirConditionLog">
+        select ac_id, state, date from air_condition_log where date between #{start} and #{end};
+    </select>
+
+    <select id="getLogsByAcIdAndStartAndEnd" resultType="cn.edu.bupt.aircondition.entity.AirConditionLog">
+        select ac_id, state, date from air_condition_log where date between #{start} and #{end} and ac_id = #{acId};
+    </select>
+
+    <insert id="save">
+        insert into air_condition_log(ac_id, state, date) values (#{acId}, #{state}, #{date});
+    </insert>
+
+</mapper>

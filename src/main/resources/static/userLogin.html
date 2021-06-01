@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>客户入住</title>
+    <!-- 包含头部信息用于适应不同设备 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 包含 bootstrap 样式表 -->
+    <link rel="stylesheet" href="https://apps.bdimg.com/libs/bootstrap/3.2.0/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.2/dist/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+
+</head>
+
+<body>
+
+<div class="container">
+    <div class="row clearfix">
+        <div class="col-md-12 column">
+            <div class="jumbotron"  style="background: darkseagreen;text-align: center;">
+                <h1>
+                    客户入住
+                </h1>
+            </div>
+        </div>
+    </div>
+
+    <div class="row clearfix">
+        <div class="col-md-12 column">
+<!--            <form class="form-horizontal" role="form" >-->
+                <div class="form-group" style="font-size:25px;">
+                    <label for="name" class="col-sm-2 control-label" >姓名</label>
+                    <div class="col-sm-10">
+                        <input type="name" class="form-control" id="name" name="name" />
+                    </div>
+                </div>
+            <div class="col-md-12 column">
+                <br>
+            </div>
+        <div class="col-md-12 column">
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10">
+                        <button type="button" class="btn btn-lg btn-success" style="background: darkseagreen;padding: 16px 32px;position: absolute;right: 0px;font-size:20px;" id="checkin"> 入住 </button>
+
+                    </div>
+                </div>
+        </div>
+<!--            </form>-->
+        </div>
+
+    </div>
+
+</div>
+</body>
+
+<script>
+    var acId;
+    $(document).ready(function () {
+        $("#checkin").click(function () {//入住按钮点击后
+            $.ajax({
+                        url:"/front/checkin",
+                            type:"GET",
+                        data:$("#name"),
+                        success:function(result){
+                        // alert("success");
+                        if (result.code== 200)
+                        {
+                            // $.cookie('roomID',result.result.acId);
+                            acId = result.result.acId;
+                        alert("您的房间号为："+acId);
+                        window.location.href = '/user.html'+'?index='+acId;
+
+                    }
+                },
+                error:function(jqXHR,textStatus,errorThrown){
+                    alert("房间已满，可以去别家酒店试试看哦～");
+                }
+            })
+
+        })
+    })
+</script>
+
+</html>
