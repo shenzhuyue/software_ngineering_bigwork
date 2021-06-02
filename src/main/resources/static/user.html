@@ -164,7 +164,7 @@
     
     function getAirState() {
         $.ajax({
-            url:"/ac/state",
+            url:"http://119.3.212.133:20002/ac/state",
             type:"GET",
             data:{
                 "acId":acId
@@ -247,7 +247,7 @@
 
     function changeWind() {
         $.ajax({
-            url:"/ac/adjust",
+            url:"http://119.3.212.133:20002/ac/adjust",
             type:"GET",
             data:{
                 "acId":acId,
@@ -269,7 +269,7 @@
 
     function changeTemp() {
         $.ajax({
-            url:"/ac/adjust",
+            url:"http://119.3.212.133:20002/ac/adjust",
             type:"GET",
             data:{
                 "acId":acId,
@@ -310,21 +310,21 @@
         }
 
         $.ajax({
-            url:"/ac/start",
+            url:"http://119.3.212.133:20002/ac/start",
             type:"GET",
             data:{
                 "acId":acId,
             "cTempt":cTempt
         },
         success:function(result){
-            // alert("success");
+            alert("success");
             if (result.code== 200)
             {
 
             }
         },
         error:function(jqXHR,textStatus,errorThrown){
-            // alert("error");
+            alert("error");
         }
     })
     }
@@ -337,13 +337,13 @@
 
 
         $.ajax({
-            url:"/ac/shutdown",
+            url:"http://119.3.212.133:20002/ac/shutdown",
             type:"GET",
             data:{
                 "acId":acId
             },
             success:function(result){
-                // alert("success");
+                alert("success");
             },
             error:function(jqXHR,textStatus,errorThrown){
                 alert("error");
@@ -352,7 +352,7 @@
     }
 
     function checkout() {
-        window.location.href = '/detailList.html'+'?index='+acId;
+        window.location.href = 'http://119.3.212.133:20002/detailList.html'+'?index='+acId;
     }
 
 

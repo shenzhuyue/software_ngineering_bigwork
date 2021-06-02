@@ -10,7 +10,7 @@
         $(document).ready(function() {
             $("#start-btn").click(function () {
                 $.ajax({
-                    url: "/admin/start",
+                    url: "http://119.3.212.133:20002/admin/start",
                     type: "GET",
                     data: $("#num"),
                     success: function (result) {
@@ -24,7 +24,7 @@
             });
             $("#setMode").click(function () {
                 $.ajax({
-                    url: "/admin/mode",
+                    url: "http://119.3.212.133:20002/admin/mode",
                     type: "GET",
                     data: {
                         defaultMode:$("#defaultMode").val(),
@@ -46,7 +46,7 @@
             });
             $("#off-btn").click(function () {
                 $.ajax({
-                    url: "/admin/off",
+                    url: "http://119.3.212.133:20002/admin/off",
                     type: "GET",
                     success: function (result) {
                         alert("空调已关闭");
@@ -58,7 +58,7 @@
             });
             $("#run-btn").click(function () {
                 $.ajax({
-                    url: "/admin/run",
+                    url: "http://119.3.212.133:20002/admin/run",
                     type: "GET",
                     success: function (result) {
                         alert("空调开始运行");
@@ -70,7 +70,7 @@
             });
             $("#state-btn").click(function () {
                 $.ajax({
-                    url: "/admin/state",
+                    url: "http://119.3.212.133:20002/admin/state",
                     type: "GET",
                     success: function (result) {
                         var list = result.result.airConditionList.airConditionList;

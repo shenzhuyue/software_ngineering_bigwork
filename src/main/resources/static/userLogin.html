@@ -58,7 +58,7 @@
     $(document).ready(function () {
         $("#checkin").click(function () {//入住按钮点击后
             $.ajax({
-                        url:"/front/checkin",
+                        url:"http://119.3.212.133:20002/front/checkin",
                             type:"GET",
                         data:$("#name"),
                         success:function(result){
@@ -68,7 +68,7 @@
                             // $.cookie('roomID',result.result.acId);
                             acId = result.result.acId;
                         alert("您的房间号为："+acId);
-                        window.location.href = '/user.html'+'?index='+acId;
+                        window.location.href = 'http://119.3.212.133:20002/user.html'+'?index='+acId;
 
                     }
                 },

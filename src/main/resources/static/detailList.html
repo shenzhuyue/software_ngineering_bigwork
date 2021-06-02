@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>detailList</title>
@@ -7,107 +8,106 @@
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.2/dist/jquery.min.js"></script>
     <script src="https://cdn.staticfile.org/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
 </head>
+
 <body onload="load()">
-<div class="container">
-    <div class="row clearfix">
-        <div class="col-md-12 column">
-            <div class="jumbotron" style="background: darkseagreen;text-align: center;">
-                <h1>
-                    请签收您的账单
-                </h1>
+    <div class="container">
+        <div class="row clearfix">
+            <div class="col-md-12 column">
+                <div class="jumbotron" style="background: darkseagreen;text-align: center;">
+                    <h1>
+                        请签收您的账单
+                    </h1>
+                </div>
+            </div>
+        </div>
+        <div class="row clearfix">
+            <div class="col-md-12 column" id="here">
+                <table class="table" id="detailList">
+                    <thead>
+                        <tr>
+                            <th>
+                                服务开始时间
+                            </th>
+                            <th>
+                                服务结束时间
+                            </th>
+                            <th>
+                                风速
+                            </th>
+                            <th>
+                                模式
+                            </th>
+                            <th>
+                                服务开始温度
+                            </th>
+                            <th>
+                                服务结束温度
+                            </th>
+                            <th>
+                                用电量
+                            </th>
+                            <th>
+                                费用
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!--                <tr>-->
+                        <!--                    <td>-->
+                        <!--                        1-->
+                        <!--                    </td>-->
+                        <!--                    <td>-->
+                        <!--                        TB - Monthly-->
+                        <!--                    </td>-->
+                        <!--                    <td>-->
+                        <!--                        01/04/2012-->
+                        <!--                    </td>-->
+                        <!--                    <td>-->
+                        <!--                        Default-->
+                        <!--                    </td>-->
+                        <!--                    <td>-->
+                        <!--                        1-->
+                        <!--                    </td>-->
+                        <!--                    <td>-->
+                        <!--                        TB - Monthly-->
+                        <!--                    </td>-->
+                        <!--                    <td>-->
+                        <!--                        01/04/2012-->
+                        <!--                    </td>-->
+                        <!--                    <td>-->
+                        <!--                        Default-->
+                        <!--                    </td>-->
+                        <!--                </tr>-->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="row clearfix">
+            <div class="col-md-12 column">
+                <h3>
+                    本次需要支付的费用为：<span id="allFee"></span>
+                </h3>
+            </div>
+        </div>
+        <div class="row clearfix">
+            <div class="col-md-4 column">
+            </div>
+            <div class="col-md-4 column">
+
+            </div>
+            <div class="col-md-4 column">
+                <button type="button" class="btn  btn-default btn-block" style="padding: 3px 6px;
+            background: darkseagreen;text-align: center;font-size:40px;" onclick="checkout()">确定</button>
             </div>
         </div>
     </div>
-    <div class="row clearfix">
-        <div class="col-md-12 column" id="here">
-            <table class="table" id="detailList">
-                <thead>
-                <tr>
-                    <th>
-                        服务开始时间
-                    </th>
-                    <th>
-                        服务结束时间
-                    </th>
-                    <th>
-                        风速
-                    </th>
-                    <th>
-                        模式
-                    </th>
-                    <th>
-                        服务开始温度
-                    </th>
-                    <th>
-                        服务结束温度
-                    </th>
-                    <th>
-                        用电量
-                    </th>
-                    <th>
-                        费用
-                    </th>
-                </tr>
-                </thead>
-                <tbody>
-<!--                <tr>-->
-<!--                    <td>-->
-<!--                        1-->
-<!--                    </td>-->
-<!--                    <td>-->
-<!--                        TB - Monthly-->
-<!--                    </td>-->
-<!--                    <td>-->
-<!--                        01/04/2012-->
-<!--                    </td>-->
-<!--                    <td>-->
-<!--                        Default-->
-<!--                    </td>-->
-<!--                    <td>-->
-<!--                        1-->
-<!--                    </td>-->
-<!--                    <td>-->
-<!--                        TB - Monthly-->
-<!--                    </td>-->
-<!--                    <td>-->
-<!--                        01/04/2012-->
-<!--                    </td>-->
-<!--                    <td>-->
-<!--                        Default-->
-<!--                    </td>-->
-<!--                </tr>-->
-                </tbody>
-            </table>
-        </div>
-    </div>
-    <div class="row clearfix">
-        <div class="col-md-12 column">
-            <h3>
-                本次需要支付的费用为：<span id="allFee"></span>
-            </h3>
-        </div>
-    </div>
-    <div class="row clearfix">
-        <div class="col-md-4 column">
-        </div>
-        <div class="col-md-4 column">
-
-        </div>
-        <div class="col-md-4 column">
-            <button type="button" class="btn  btn-default btn-block" style="padding: 3px 6px;
-            background: darkseagreen;text-align: center;font-size:40px;"
-                    onclick="checkout()">确定</button>
-        </div>
-    </div>
-</div>
 </body>
 
 <script type="text/javascript">
-
     var url = location.search; //获取url中"?"符后的字串
-    if (url.indexOf("?") != -1) {    //判断是否有参数
+    if (url.indexOf("?") != -1) { //判断是否有参数
         var str = url.substr(1); //从第一个字符开始 因为第0个是?号 获取所有除问号的所有符串
-        strs = str.split("=");   //用等号进行分隔 （因为知道只有一个参数 所以直接用等号进分隔 如果有多个参数 要用&号分隔 再用等号进行分隔）
+        strs = str.split("="); //用等号进行分隔 （因为知道只有一个参数 所以直接用等号进分隔 如果有多个参数 要用&号分隔 再用等号进行分隔）
         // alert(strs[1]);          //直接弹出第一个参数 （如果有多个参数 还要进行循环的）
     }
 
@@ -115,16 +115,16 @@
 
     function load() {
         $.ajax({
-            url:"/front/checkout",
-            type:"GET",
-            data:{
-                "acId":acId
+            url: "http://119.3.212.133:20002/front/checkout",
+            type: "GET",
+            data: {
+                "acId": acId
             },
-            success:function(result){
+            success: function(result) {
                 // alert("checkout success");
                 document.getElementById("allFee").innerHTML = result.result.allFee;
                 var tab = document.getElementById("detailList");
-                var row,cell;
+                var row, cell;
                 var detailObjectList = result.result.detailObjectList;
                 // alert("detailObjectList:"+ detailObjectList);
                 // var serve= result.result.serveQueue.serveObjectList;
@@ -132,45 +132,45 @@
                 var i;
                 var len = detailObjectList.length;
                 // alert("length:"+len);
-                for(i=0;i<len;i++) {
-                    row=tab.insertRow();//参数-1表示新增的行或者列是新增在最后面
-                    var detailObject=detailObjectList[i];
+                for (i = 0; i < len; i++) {
+                    row = tab.insertRow(); //参数-1表示新增的行或者列是新增在最后面
+                    var detailObject = detailObjectList[i];
 
                     // alert("detailObject"+detailObject);
 
-                    cell=row.insertCell();
-                    cell.innerHTML=JSON.stringify(detailObject.startTime);
+                    cell = row.insertCell();
+                    cell.innerHTML = JSON.stringify(detailObject.startTime);
 
 
-                    cell=row.insertCell();
-                    cell.innerHTML=JSON.stringify(detailObject.endTime);
+                    cell = row.insertCell();
+                    cell.innerHTML = JSON.stringify(detailObject.endTime);
 
 
-                    cell=row.insertCell();
-                    cell.innerHTML=JSON.stringify(detailObject.speed);
+                    cell = row.insertCell();
+                    cell.innerHTML = JSON.stringify(detailObject.speed);
 
 
-                    cell=row.insertCell();
-                    cell.innerHTML=JSON.stringify(detailObject.mode);
+                    cell = row.insertCell();
+                    cell.innerHTML = JSON.stringify(detailObject.mode);
 
 
-                    cell=row.insertCell();
-                    cell.innerHTML=JSON.stringify(detailObject.startTempt);
+                    cell = row.insertCell();
+                    cell.innerHTML = JSON.stringify(detailObject.startTempt);
 
 
-                    cell=row.insertCell();
-                    cell.innerHTML=JSON.stringify(detailObject.endTempt);
+                    cell = row.insertCell();
+                    cell.innerHTML = JSON.stringify(detailObject.endTempt);
 
 
-                    cell=row.insertCell();
-                    cell.innerHTML=JSON.stringify(detailObject.consumption);
+                    cell = row.insertCell();
+                    cell.innerHTML = JSON.stringify(detailObject.consumption);
 
 
-                    cell=row.insertCell();
-                    cell.innerHTML=JSON.stringify(detailObject.fee);
+                    cell = row.insertCell();
+                    cell.innerHTML = JSON.stringify(detailObject.fee);
                 }
             },
-            error:function(jqXHR,textStatus,errorThrown){
+            error: function(jqXHR, textStatus, errorThrown) {
                 alert("checkout error");
             }
         })
@@ -206,7 +206,8 @@
         // row.style.background = '#EAF2D3';
 
         // alert("out");
-        window.location.href = '/index.html';
+        window.location.href = 'http://119.3.212.133:20002/index.html';
     }
 </script>
+
 </html>
