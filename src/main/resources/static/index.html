@@ -1,55 +1,33 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
     <meta charset="utf-8">
-    <title>身份验证</title>
-    <!-- 包含头部信息用于适应不同设备 -->
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- 包含 bootstrap 样式表 -->
-    <link rel="stylesheet" href="https://apps.bdimg.com/libs/bootstrap/3.2.0/css/bootstrap.min.css">
-    <style>
-        body{
-            background-image:url('background.jpg');
-            background-repeat:no-repeat;
-        }
-    </style>
+    <title>index</title>
+    <link href="CSS_styles/main.css" rel="stylesheet">
 </head>
 
-
-
 <body>
-
-<div class="container">
-    <div class="row clearfix">
-        <div class="col-md-4 column">
-        </div>
-        <div class="col-md-4 column">
-        </div>
-        <div class="col-md-4 column">
-            <div class="row clearfix">
-                <div class="col-md-12 column"  style="background: aqua;text-align: center;">
-                    <h1>
-                        请选择您的身份
-                    </h1>
-                    <div class="ms-editor-squiggler">
-                    </div>
+    <div id="root">
+        <div class="Dashboard fullscreen dark">
+            <div class="Background">
+                <div class="fullscreen" style="background-color: black; opacity: 1; transition: opacity 200ms ease-in-out 0s;">
+                    <div class="Image fullscreen" style="background-image: url(background.jpg);"></div>
                 </div>
             </div>
-            <div class="row clearfix">
-                <div class="col-md-12 column">
-                    <div class="row clearfix">
-                        <div class="col-md-6 column">
-                            <button type="button"  style="padding: 25px;
-<!--    text-align: center;font-size:20px;" onclick="window.location.href = 'http://119.3.212.133:20002/userLogin.html'">入住客户</button>
-                            <div class="ms-editor-squiggler">
-                            </div>
-                            <div class="ms-editor-squiggler">
+            <div class="Widgets fullscreen">
+                <div class="container">
+                    <div class="Slot middleCentre">
+                        <div class="Widget " style="font-size: 24px;">
+                            <div class="Greeting">
+                                <h2>欢迎使用空调管理系统</h2>
                             </div>
                         </div>
-                        <div class="col-md-6 column">
-                            <button type="button" style="padding:25px;
-<!--    text-align: center;font-size:20px;" onclick="window.location.href = 'http://119.3.212.133:20002/staffLogin.html'">工作人员</button>
-                            <div class="ms-editor-squiggler">
+                        <div class="Widget " style="font-size: 24px;">
+                            <div class="Links" style="grid-template-columns: 1fr 1fr; text-align: left;">
+                                <button type="button" style="padding: 25px;text-align: center;font-size:20px;" onclick="window.location.href = 'http://119.3.212.133:20002/userLogin.html'">入住客户</button>
+                                <button type="button" style="padding:25px;text-align: center;font-size:20px;" onclick="window.location.href = 'http://119.3.212.133:20002/staffLogin.html'">工作人员</button>
                             </div>
                         </div>
                     </div>
@@ -57,7 +35,6 @@
             </div>
         </div>
     </div>
-</div>
 </body>
 
 </html>

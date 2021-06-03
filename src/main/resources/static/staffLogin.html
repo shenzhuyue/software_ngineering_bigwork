@@ -1,66 +1,58 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
     <meta charset="utf-8">
-    <title>工作人员身份验证</title>
-    <!-- 包含头部信息用于适应不同设备 -->
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- 包含 bootstrap 样式表 -->
-    <link rel="stylesheet" href="https://apps.bdimg.com/libs/bootstrap/3.2.0/css/bootstrap.min.css">
+
+    <title>staffLogin</title>
+    <link href="CSS_styles/main.css" rel="stylesheet">
 </head>
 
 <body>
+    <div id="root">
+        <div class="Dashboard fullscreen dark">
+            <div class="Background">
+                <div class="fullscreen" style="background-color: black; opacity: 1; transition: opacity 200ms ease-in-out 0s;">
+                    <div class="Image fullscreen" style="background-image: url(background.jpg);"></div>
+                </div>
+            </div>
+            <div class="Widgets fullscreen">
+                <div class="container">
+                    <div class="Slot middleCentre">
+                        <div class="Widget " style="font-size: 24px;">
+                            <div class="Greeting">
+                                <h2>请工作人员进行身份验证</h2>
+                            </div>
+                        </div>
+                        <div class="Widget " style="font-size: 24px;">
+                            <form class="Search"><input placeholder="输入身份编号" tabindex="1" id="staff"></form>
+                            <form class="Search"><input placeholder="输入密码" tabindex="1" type="password" id="Password"></form>
+                        </div>
+                        <div class="Widget " style="font-size: 24px;">
 
-<div class="container">
-    <div class="jumbotron"  style="background: darkseagreen;text-align: center;">
-        <h1>
-            工作人员身份验证
-        </h1>
-    </div>
+                            <button type="button" class="Suggestions" id=" checkin " onclick="verify() "> 验证 </button>
 
-    <div class="row clearfix">
-        <div class="col-md-12 column">
-            <form class="form-horizontal" role="form">
-                <div class="form-group">
-                    <label class="col-sm-2 control-label" style="font-size:25px;">身份编号</label>
-                    <div class="col-sm-10">
-                        <input type="staff" class="form-control" id="staff" />
+                        </div>
                     </div>
                 </div>
-                <div class="form-group">
-                    <label for="Password" class="col-sm-2 control-label" style="font-size:25px;">密码</label>
-                    <div class="col-sm-10">
-                        <input type="password" class="form-control" id="Password" />
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="col-sm-offset-2 col-sm-10">
-                        <button type="button" class="btn btn-lg btn-success" style="background: darkseagreen;padding: 16px 32px;position: absolute;right: 15px;font-size:20px;" id="checkin" onclick="verify()"> 验证 </button>
-<!--                        <button type="submit" class="btn btn-default">入住 </button>-->
-                    </div>
-                </div>
-            </form>
+            </div>
         </div>
     </div>
-
-</div>
 </body>
 
-<script type="text/javascript">
+
+
+<script type="text/javascript ">
     function verify() {
-        // alert("staff"+document.getElementById('staff').value);
+        // alert("staff "+document.getElementById('staff').value);
         // alert(document.getElementById('Password').value);
-        if (document.getElementById('staff').value == '01' && document.getElementById('Password').value == '123' )
-        {
+        if (document.getElementById('staff').value == '01' && document.getElementById('Password').value == '123') {
             window.location.href = 'http://119.3.212.133:20002/admin.html';
-        }
-        else if (document.getElementById('staff').value == '02' && document.getElementById('Password').value == 321 )
-        {
+        } else if (document.getElementById('staff').value == '02' && document.getElementById('Password').value == 321) {
             window.location.href = 'http://119.3.212.133:20002/manager.html';
-        }
-        else
-        {
-            alert("身份验证失败");
+        } else {
+            alert("身份验证失败 ");
         }
     }
 </script>
