@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>空调管理员</title>
@@ -7,214 +8,267 @@
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.2/dist/jquery.min.js"></script>
     <script src="https://cdn.staticfile.org/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
     <script>
+        var timer;
+
+        function getState() {
+            $.ajax({
+                url: "http://119.3.212.133:20002/admin/state",
+                type: "GET",
+                success: function(result) {
+                    var list = result.result.airConditionList.airConditionList;
+                    var serve = result.result.serveQueue.serveObjectList;
+                    var L = result.result.waitQueue.queueL;
+                    var M = result.result.waitQueue.queueM;
+                    var H = result.result.waitQueue.queueH;
+                    var i = 1;
+                    for (i = 1; i <= 5; i++) {
+                        var ac = list[i - 1];
+                        document.getElementById("acList").rows[i].cells[1].innerHTML = JSON.stringify(ac.state);
+                        document.getElementById("acList").rows[i].cells[2].innerHTML = JSON.stringify(ac.mode);
+                        document.getElementById("acList").rows[i].cells[3].innerHTML = JSON.stringify(ac.speed);
+                        document.getElementById("acList").rows[i].cells[4].innerHTML = JSON.stringify(ac.currentTemperature);
+                        document.getElementById("acList").rows[i].cells[5].innerHTML = JSON.stringify(ac.targetTemperature);
+                        document.getElementById("acList").rows[i].cells[6].innerHTML = JSON.stringify(ac.originTemperature);
+                        document.getElementById("acList").rows[i].cells[7].innerHTML = JSON.stringify(ac.fee);
+                    }
+                    for (i = 1; i <= 3; i++) {
+                        var ac = serve[i - 1];
+                        document.getElementById("serveQ").rows[i].cells[1].innerHTML = JSON.stringify(ac.serveId);
+                        document.getElementById("serveQ").rows[i].cells[2].innerHTML = JSON.stringify(ac.state);
+                        document.getElementById("serveQ").rows[i].cells[3].innerHTML = JSON.stringify(ac.mode);
+                        document.getElementById("serveQ").rows[i].cells[4].innerHTML = JSON.stringify(ac.speed);
+                        document.getElementById("serveQ").rows[i].cells[5].innerHTML = JSON.stringify(ac.startTemp);
+                        document.getElementById("serveQ").rows[i].cells[6].innerHTML = JSON.stringify(ac.targetTemp);
+                        document.getElementById("serveQ").rows[i].cells[7].innerHTML = JSON.stringify(ac.currentTemp);
+                        document.getElementById("serveQ").rows[i].cells[8].innerHTML = JSON.stringify(ac.feeRate);
+                        document.getElementById("serveQ").rows[i].cells[9].innerHTML = JSON.stringify(ac.fee);
+                        document.getElementById("serveQ").rows[i].cells[10].innerHTML = JSON.stringify(ac.startTime);
+                        document.getElementById("serveQ").rows[i].cells[11].innerHTML = JSON.stringify(ac.endTime);
+                        document.getElementById("serveQ").rows[i].cells[12].innerHTML = JSON.stringify(ac.serveTime);
+                    }
+                    for (i = 1; H[i - 1] != null; i++) {
+                        var ac = H[i - 1];
+                        document.getElementById("H").rows[i].cells[0].innerHTML = JSON.stringify(ac.acId);
+                        document.getElementById("H").rows[i].cells[1].innerHTML = JSON.stringify(ac.speed);
+                        document.getElementById("H").rows[i].cells[2].innerHTML = JSON.stringify(ac.targetTemp);
+                        document.getElementById("H").rows[i].cells[3].innerHTML = JSON.stringify(ac.timeToWait);
+                    }
+                    for (i = 1; M[i - 1] != null; i++) {
+                        var ac = M[i - 1];
+                        document.getElementById("M").rows[i].cells[0].innerHTML = JSON.stringify(ac.acId);
+                        document.getElementById("M").rows[i].cells[1].innerHTML = JSON.stringify(ac.speed);
+                        document.getElementById("M").rows[i].cells[2].innerHTML = JSON.stringify(ac.targetTemp);
+                        document.getElementById("M").rows[i].cells[3].innerHTML = JSON.stringify(ac.timeToWait);
+
+                    }
+                    for (i = 1; L[i - 1] != null; i++) {
+                        var ac = L[i - 1];
+                        document.getElementById("L").rows[i].cells[0].innerHTML = JSON.stringify(ac.acId);
+                        document.getElementById("L").rows[i].cells[1].innerHTML = JSON.stringify(ac.speed);
+                        document.getElementById("L").rows[i].cells[2].innerHTML = JSON.stringify(ac.targetTemp);
+                        document.getElementById("L").rows[i].cells[3].innerHTML = JSON.stringify(ac.timeToWait);
+
+                    }
+
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    alert("错误");
+                    clearInterval(timer);
+                }
+            });
+
+        }
         $(document).ready(function() {
-            $("#start-btn").click(function () {
+            $("#defaultMode").bind("input propertychange", function() {
+                if ($("#defaultMode").val() == 1) {
+                    $("#defaultTempt").val(28);
+                    $("#temptHighLimit").val(30);
+                    $("#temptLowLimit").val(25);
+                } else if ($("#defaultMode").val() == 0) {
+                    $("#defaultTempt").val(22);
+                    $("#temptLowLimit").val(18);
+                    $("#temptHighLimit").val(25);
+                }
+            });
+
+
+
+            $("#start-btn").click(function() {
                 $.ajax({
                     url: "http://119.3.212.133:20002/admin/start",
                     type: "GET",
-                    data: $("#num"),
-                    success: function (result) {
-                        if (result.code==200)
-                            alert("成功开启");
-                    },
-                    error: function (jqXHR, textStatus, errorThrown) {
-                        alert("错误");
-                    }
-                });
-            });
-            $("#setMode").click(function () {
-                $.ajax({
-                    url: "http://119.3.212.133:20002/admin/mode",
-                    type: "GET",
                     data: {
-                        defaultMode:$("#defaultMode").val(),
-                        defaultSpeed:$("#defaultSpeed").val(),
-                        defaultTempt:$("#defaultTempt").val(),
-                        feeRateH:$("#feeRateH").val(),
-                        feeRateL:$("#feeRateL").val(),
-                        feeRateM:$("#feeRateM").val(),
-                        temptHighLimit:$("#temptHighLimit").val(),
-                        temptLowLimit:$("#temptLowLimit").val()
+                        numOfServeObject: $("#numOfServeObject").val(),
+                        defaultMode: $("#defaultMode").val(),
+                        defaultSpeed: $("#defaultSpeed").val(),
+                        defaultTempt: $("#defaultTempt").val(),
+                        feeRateH: $("#feeRateH").val(),
+                        feeRateL: $("#feeRateL").val(),
+                        feeRateM: $("#feeRateM").val(),
+                        temptHighLimit: $("#temptHighLimit").val(),
+                        temptLowLimit: $("#temptLowLimit").val()
                     },
-                    success: function (result) {
-                        alert("设置成功");
+                    success: function(result) {
+                        if (result.code == 200) {
+                            alert("成功开启");
+                        } else {
+                            alert("中央空调已开机");
+                        }
                     },
-                    error: function (jqXHR, textStatus, errorThrown) {
+                    error: function(jqXHR, textStatus, errorThrown) {
                         alert("错误");
                     }
                 });
             });
-            $("#off-btn").click(function () {
+            $("#state-btn").click(function() {
+                console.log($("#frequent").val());
+                var t = $("#frequent").val() * 1000;
+                clearInterval(timer);
+                timer = setInterval(getState, t);
+            });
+            // $("#setMode").click(function() {
+            //     $.ajax({
+            //         url: "http://119.3.212.133:20002/admin/mode",
+            //         type: "GET",
+            //         data: {
+            //             defaultMode: $("#defaultMode").val(),
+            //             defaultSpeed: $("#defaultSpeed").val(),
+            //             defaultTempt: $("#defaultTempt").val(),
+            //             feeRateH: $("#feeRateH").val(),
+            //             feeRateL: $("#feeRateL").val(),
+            //             feeRateM: $("#feeRateM").val(),
+            //             temptHighLimit: $("#temptHighLimit").val(),
+            //             temptLowLimit: $("#temptLowLimit").val()
+            //         },
+            //         success: function(result) {
+            //             alert("设置成功");
+            //         },
+            //         error: function(jqXHR, textStatus, errorThrown) {
+            //             alert("错误");
+            //         }
+            //     });
+            // });
+            $("#off-btn").click(function() {
                 $.ajax({
                     url: "http://119.3.212.133:20002/admin/off",
                     type: "GET",
-                    success: function (result) {
+                    success: function(result) {
                         alert("空调已关闭");
+                        clearInterval(timer);
                     },
-                    error: function (jqXHR, textStatus, errorThrown) {
+                    error: function(jqXHR, textStatus, errorThrown) {
                         alert("错误");
                     }
                 });
             });
-            $("#run-btn").click(function () {
-                $.ajax({
-                    url: "http://119.3.212.133:20002/admin/run",
-                    type: "GET",
-                    success: function (result) {
-                        alert("空调开始运行");
-                    },
-                    error: function (jqXHR, textStatus, errorThrown) {
-                        alert("错误");
-                    }
-                });
-            });
-            $("#state-btn").click(function () {
-                $.ajax({
-                    url: "http://119.3.212.133:20002/admin/state",
-                    type: "GET",
-                    success: function (result) {
-                        var list = result.result.airConditionList.airConditionList;
-                        var serve= result.result.serveQueue.serveObjectList;
-                        var L=result.result.waitQueue.queueL;
-                        var M=result.result.waitQueue.queueM;
-                        var H=result.result.waitQueue.queueH;
-                        var i=1;
-                        for(i=1;i<=5;i++){
-                            var ac=list[i-1];
-                            document.getElementById("acList").rows[i].cells[1].innerHTML=JSON.stringify(ac.state);
-                            document.getElementById("acList").rows[i].cells[2].innerHTML=JSON.stringify(ac.mode);
-                            document.getElementById("acList").rows[i].cells[3].innerHTML=JSON.stringify(ac.speed);
-                            document.getElementById("acList").rows[i].cells[4].innerHTML=JSON.stringify(ac.currentTemperature);
-                            document.getElementById("acList").rows[i].cells[5].innerHTML=JSON.stringify(ac.targetTemperature);
-                            document.getElementById("acList").rows[i].cells[6].innerHTML=JSON.stringify(ac.originTemperature);
-                            document.getElementById("acList").rows[i].cells[7].innerHTML=JSON.stringify(ac.fee);
-                        }
-                        for(i=1;i<=3;i++){
-                            var ac=serve[i-1];
-                            document.getElementById("serveQ").rows[i].cells[1].innerHTML=JSON.stringify(ac.serveId);
-                            document.getElementById("serveQ").rows[i].cells[2].innerHTML=JSON.stringify(ac.state);
-                            document.getElementById("serveQ").rows[i].cells[3].innerHTML=JSON.stringify(ac.mode);
-                            document.getElementById("serveQ").rows[i].cells[4].innerHTML=JSON.stringify(ac.speed);
-                            document.getElementById("serveQ").rows[i].cells[5].innerHTML=JSON.stringify(ac.startTemp);
-                            document.getElementById("serveQ").rows[i].cells[6].innerHTML=JSON.stringify(ac.targetTemp);
-                            document.getElementById("serveQ").rows[i].cells[7].innerHTML=JSON.stringify(ac.currentTemp);
-                            document.getElementById("serveQ").rows[i].cells[8].innerHTML=JSON.stringify(ac.feeRate);
-                            document.getElementById("serveQ").rows[i].cells[9].innerHTML=JSON.stringify(ac.fee);
-                            document.getElementById("serveQ").rows[i].cells[10].innerHTML=JSON.stringify(ac.startTime);
-                            document.getElementById("serveQ").rows[i].cells[11].innerHTML=JSON.stringify(ac.endTime);
-                            document.getElementById("serveQ").rows[i].cells[12].innerHTML=JSON.stringify(ac.serveTime);
-                        }
-                        for(i=1;H[i-1]!=null;i++){
-                            var ac=H[i-1];
-                            document.getElementById("H").rows[i].cells[0].innerHTML=JSON.stringify(ac.acId);
-                            document.getElementById("H").rows[i].cells[1].innerHTML=JSON.stringify(ac.speed);
-                            document.getElementById("H").rows[i].cells[2].innerHTML=JSON.stringify(ac.targetTemp);
-                            document.getElementById("H").rows[i].cells[3].innerHTML=JSON.stringify(ac.timeToWait);
-                        }
-                        for(i=1;M[i-1]!=null;i++){
-                            var ac=M[i-1];
-                            document.getElementById("M").rows[i].cells[0].innerHTML=JSON.stringify(ac.acId);
-                            document.getElementById("M").rows[i].cells[1].innerHTML=JSON.stringify(ac.speed);
-                            document.getElementById("M").rows[i].cells[2].innerHTML=JSON.stringify(ac.targetTemp);
-                            document.getElementById("M").rows[i].cells[3].innerHTML=JSON.stringify(ac.timeToWait);
-
-                        }
-                        for(i=1;L[i-1]!=null;i++){
-                            var ac=L[i-1];
-                            document.getElementById("L").rows[i].cells[0].innerHTML=JSON.stringify(ac.acId);
-                            document.getElementById("L").rows[i].cells[1].innerHTML=JSON.stringify(ac.speed);
-                            document.getElementById("L").rows[i].cells[2].innerHTML=JSON.stringify(ac.targetTemp);
-                            document.getElementById("L").rows[i].cells[3].innerHTML=JSON.stringify(ac.timeToWait);
-
-                        }
-
-                    },
-                    error: function (jqXHR, textStatus, errorThrown) {
-                        alert("错误");
-                    }
-                });
-            });
+            // $("#run-btn").click(function() {
+            //     $.ajax({
+            //         url: "http://119.3.212.133:20002/admin/run",
+            //         type: "GET",
+            //         success: function(result) {
+            //             alert("空调开始运行");
+            //             timer = setInterval(getState, 2000);
+            //         },
+            //         error: function(jqXHR, textStatus, errorThrown) {
+            //             alert("错误");
+            //         }
+            //     });
+            // });
         })
     </script>
 </head>
+
 <body>
     <div class="container">
-        <div class="row clearfix">
-            <div class="col-md-6 column">
-                <form class="form-horizontal" role="form">
-                    <div class="form-group">
-                        <label for="num" class="col-sm-2 control-label">numOfServeObject</label>
-                        <div class="col-sm-10">
-                            <input name="numOfServeObject" type="email" class="form-control" id="num" />
-                        </div>
-                    </div>
-                </form> <button id="off-btn" type="button" class="btn btn-block btn-warning">关闭中央空调</button>
-            </div>
-            <div class="col-md-6 column">
-                <button id="start-btn" type="button" class="btn btn-default btn-block btn-success">开启中央空调</button>
-            </div>
-        </div>
         <div class="row clearfix">
             <div class="col-md-8 column">
                 <form class="form-horizontal" role="form">
                     <div class="form-group">
+                        <label for="numOfServeObject" class="col-sm-2 control-label">numOfServeObject</label>
+                        <div class="col-sm-10">
+                            <input name="numOfServeObject" type="email" class="form-control" id="numOfServeObject" value="5" />
+                        </div>
+                    </div>
+                    <div class="form-group">
                         <label for="defaultMode" class="col-sm-2 control-label">defaultMode</label>
                         <div class="col-sm-10">
-                            <input name="defaultMode" class="form-control" id="defaultMode" value="0"/>
+                            <select class="form-control" id="defaultMode">
+                                <option title="1秒刷新一次" selected value="0">制冷</option>
+                                <option title="2秒刷新一次" value="1">制热</option>
+                            </select>
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="defaultSpeed" class="col-sm-2 control-label">defaultSpeed</label>
                         <div class="col-sm-10">
-                            <input name="defaultSpeed" class="form-control" id="defaultSpeed" value="1"/>
+                            <input name="defaultSpeed" class="form-control" id="defaultSpeed" value="1" />
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="defaultTempt" class="col-sm-2 control-label">defaultTempt</label>
                         <div class="col-sm-10">
-                            <input name="defaultTempt" class="form-control" id="defaultTempt" value="25"/>
+                            <input name="defaultTempt" class="form-control" id="defaultTempt" value="22" />
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="feeRateH" class="col-sm-2 control-label">feeRateH</label>
                         <div class="col-sm-10">
-                            <input name="feeRateH" class="form-control" id="feeRateH" value="1"/>
+                            <input name="feeRateH" class="form-control" id="feeRateH" value="1" />
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="feeRateL" class="col-sm-2 control-label">feeRateL</label>
                         <div class="col-sm-10">
-                            <input name="feeRateL" class="form-control" id="feeRateL" value="0.3"/>
+                            <input name="feeRateL" class="form-control" id="feeRateL" value="0.3" />
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="feeRateM" class="col-sm-2 control-label">feeRateM</label>
                         <div class="col-sm-10">
-                            <input name="feeRateM" class="form-control" id="feeRateM" value="0.5"/>
+                            <input name="feeRateM" class="form-control" id="feeRateM" value="0.5" />
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="temptHighLimit" class="col-sm-2 control-label">temptHighLimit</label>
                         <div class="col-sm-10">
-                            <input name="temptHighLimit" class="form-control" id="temptHighLimit" value="25"/>
+                            <input name="temptHighLimit" class="form-control" id="temptHighLimit" value="25" />
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="temptLowLimit" class="col-sm-2 control-label">temptLowLimit</label>
                         <div class="col-sm-10">
-                            <input name="temptLowLimit" class="form-control" id="temptLowLimit" value="18"/>
+                            <input name="temptLowLimit" class="form-control" id="temptLowLimit" value="18" />
                         </div>
                     </div>
-
-                </form><button id="run-btn" type="button" class="btn btn-default btn-block btn-success">空调开始运行</button>
+                </form>
             </div>
             <div class="col-md-4 column">
-                <button id="setMode" type="button" class="btn btn-default btn-block btn-primary">设置默认模式</button>
+                <button id="start-btn" type="button" class="btn btn-default btn-block btn-success">开启中央空调</button>
+                <button id="off-btn" type="button" class="btn btn-block btn-warning">关闭中央空调</button>
             </div>
         </div>
-        <div class="col-md-4 column">
-            <button id="state-btn" type="button" class="btn btn-default btn-block btn-primary">查看空调状态</button>
+
+        <div class="row clearfix">
+            <div class="col-md-8 column">
+                <form class="form-horizontal" role="form">
+                    <div class="form-group">
+                        <label for="frequent" class="col-sm-2 control-label">刷新频率</label>
+                        <div class="col-sm-10">
+                            <select class="form-control" id="frequent">
+                                <option title="1秒刷新一次">1</option>
+                                <option title="2秒刷新一次" selected>2</option>
+                                <option title="5秒刷新一次">5</option>
+                                <option title="10秒刷新一次">10</option>
+                            </select>
+                        </div>
+                    </div>
+            </div>
+            <div class="col-md-4 column">
+                <button id="state-btn" type="button" class="btn btn-default btn-block btn-primary">查看空调状态</button>
+            </div>
         </div>
+
+
         <div class="row clearfix">
             <div class="col-md-12 column">
                 <p>
@@ -222,84 +276,99 @@
                 </p>
                 <table id="acList" class="table">
                     <thead>
-                    <tr>
-                        <th>
-                            acId
-                        </th>
-                        <th>
-                            state
-                        </th>
-                        <th>
-                            mode
-                        </th>
-                        <th>
-                            speed
-                        </th>
-                        <th>currentTemp</th>
-                        <th>targetTemp</th>
-                        <th>originTemp</th>
-                        <th>fee</th>
-                    </tr>
+                        <tr>
+                            <th>
+                                acId
+                            </th>
+                            <th>
+                                state
+                            </th>
+                            <th>
+                                mode
+                            </th>
+                            <th>
+                                speed
+                            </th>
+                            <th>currentTemp</th>
+                            <th>targetTemp</th>
+                            <th>originTemp</th>
+                            <th>fee</th>
+                        </tr>
                     </thead>
                     <tbody>
-                    <tr>
-                        <td>0</td>
-                        <td>
-                        </td>
-                        <td>
-                        </td>
-                        <td>
-                        </td>
-                        <td></td><td></td><td></td><td></td>
-                    </tr>
-                    <tr class="success">
-                        <td>
-                            1
-                        </td>
-                        <td>
-                        </td>
-                        <td>
-                        </td>
-                        <td>
-                        </td>
-                        <td></td><td></td><td></td><td></td>
-                    </tr>
-                    <tr class="error">
-                        <td>
-                            2
-                        </td>
-                        <td>
-                        </td>
-                        <td>
-                        </td>
-                        <td>
-                        </td>
-                        <td></td><td></td><td></td><td></td>
-                    </tr>
-                    <tr class="warning">
-                        <td>
-                            3
-                        </td>
-                        <td>
-                        </td>
-                        <td>
-                        </td>
-                        <td>
-                        </td>
-                        <td></td><td></td><td></td><td></td>
-                    </tr>
-                    <tr class="info">
-                        <td>
-                            4
-                        </td>
-                        <td>
-                        </td>
-                        <td>
-                        </td>
-                        <td>
-                        </td>
-                        <td></td><td></td><td></td><td></td>
-                    </tr>
+                        <tr>
+                            <td>0</td>
+                            <td>
+                            </td>
+                            <td>
+                            </td>
+                            <td>
+                            </td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr class="success">
+                            <td>
+                                1
+                            </td>
+                            <td>
+                            </td>
+                            <td>
+                            </td>
+                            <td>
+                            </td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr class="error">
+                            <td>
+                                2
+                            </td>
+                            <td>
+                            </td>
+                            <td>
+                            </td>
+                            <td>
+                            </td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr class="warning">
+                            <td>
+                                3
+                            </td>
+                            <td>
+                            </td>
+                            <td>
+                            </td>
+                            <td>
+                            </td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr class="info">
+                            <td>
+                                4
+                            </td>
+                            <td>
+                            </td>
+                            <td>
+                            </td>
+                            <td>
+                            </td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
@@ -311,67 +380,91 @@
                 </p>
                 <table id="serveQ" class="table">
                     <thead>
-                    <tr>
-                        <th>
-                            acId
-                        </th>
-                        <th>
-                            serveId
-                        </th>
-                        <th>
-                            state
-                        </th>
-                        <th>
-                            mode
-                        </th>
-                        <th>speed</th>
-                        <th>startTemp</th>
-                        <th>targetTemp</th>
-                        <th>currentTemp</th>
-                        <th>feeRate</th>
-                        <th>fee</th>
-                        <th>startTime</th>
-                        <th>endTime</th>
-                        <th>serveTime</th>
-                    </tr>
+                        <tr>
+                            <th>
+                                acId
+                            </th>
+                            <th>
+                                serveId
+                            </th>
+                            <th>
+                                state
+                            </th>
+                            <th>
+                                mode
+                            </th>
+                            <th>speed</th>
+                            <th>startTemp</th>
+                            <th>targetTemp</th>
+                            <th>currentTemp</th>
+                            <th>feeRate</th>
+                            <th>fee</th>
+                            <th>startTime</th>
+                            <th>endTime</th>
+                            <th>serveTime</th>
+                        </tr>
                     </thead>
                     <tbody>
-                    <tr class="warning">
-                        <td>
-                            1
-                        </td>
-                        <td>
-                        </td>
-                        <td>
-                        </td>
-                        <td>
-                        </td>
-                        <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
-                    </tr>
-                    <tr class="success">
-                        <td>
-                            1
-                        </td>
-                        <td>
-                        </td>
-                        <td>
-                        </td>
-                        <td>
-                        </td>
-                        <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
-                    </tr>
-                    <tr class="info">
-                        <td>
-                            2
-                        </td>
-                        <td>
-                        </td>
-                        <td>
-                        </td>
-                        <td>
-                        </td>
-                        <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
-                    </tr>
+                        <tr class="warning">
+                            <td>
+                                1
+                            </td>
+                            <td>
+                            </td>
+                            <td>
+                            </td>
+                            <td>
+                            </td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr class="success">
+                            <td>
+                                1
+                            </td>
+                            <td>
+                            </td>
+                            <td>
+                            </td>
+                            <td>
+                            </td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr class="info">
+                            <td>
+                                2
+                            </td>
+                            <td>
+                            </td>
+                            <td>
+                            </td>
+                            <td>
+                            </td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
@@ -382,85 +475,85 @@
                 <p><strong>queueH</strong></p>
                 <table id="H" class="table">
                     <thead>
-                    <tr>
-                        <th>
-                            acId
-                        </th>
-                        <th>
-                            speed
-                        </th>
-                        <th>
-                            targetTemp
-                        </th>
-                        <th>
-                            timeToWait
-                        </th>
-                    </tr>
+                        <tr>
+                            <th>
+                                acId
+                            </th>
+                            <th>
+                                speed
+                            </th>
+                            <th>
+                                targetTemp
+                            </th>
+                            <th>
+                                timeToWait
+                            </th>
+                        </tr>
                     </thead>
                     <tbody>
-                    <tr>
-                        <td>
-                            0
-                        </td>
-                        <td>
+                        <tr>
+                            <td>
+                                0
+                            </td>
+                            <td>
 
-                        </td>
-                        <td>
+                            </td>
+                            <td>
 
-                        </td>
-                        <td>
+                            </td>
+                            <td>
 
-                        </td>
-                    </tr>
-                    <tr class="success">
-                        <td>
-                            1
-                        </td>
-                        <td>
+                            </td>
+                        </tr>
+                        <tr class="success">
+                            <td>
+                                1
+                            </td>
+                            <td>
 
-                        </td>
-                        <td>
+                            </td>
+                            <td>
 
-                        </td>
-                        <td>
+                            </td>
+                            <td>
 
-                        </td>
-                    </tr>
-                    <tr class="error">
-                        <td>
-                            2
-                        </td>
-                        <td>
+                            </td>
+                        </tr>
+                        <tr class="error">
+                            <td>
+                                2
+                            </td>
+                            <td>
 
-                        </td>
-                        <td>
+                            </td>
+                            <td>
 
-                        </td>
-                        <td>
-                        </td>
-                    </tr>
-                    <tr class="warning">
-                        <td>
-                            3
-                        </td>
-                        <td>
-                        </td>
-                        <td>
-                        </td>
-                        <td>git
-                        </td>
-                    </tr>
-                    <tr class="info">
-                        <td>
-                            4
-                        </td>
-                        <td>
-                        </td>
-                        <td>
-                        </td>
-                        <td>
-                        </td>
-                    </tr>
+                            </td>
+                            <td>
+                            </td>
+                        </tr>
+                        <tr class="warning">
+                            <td>
+                                3
+                            </td>
+                            <td>
+                            </td>
+                            <td>
+                            </td>
+                            <td>git
+                            </td>
+                        </tr>
+                        <tr class="info">
+                            <td>
+                                4
+                            </td>
+                            <td>
+                            </td>
+                            <td>
+                            </td>
+                            <td>
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
@@ -468,92 +561,92 @@
                 <p><strong>queueM</strong></p>
                 <table id="M" class="table">
                     <thead>
-                    <tr>
-                        <th>
-                            acId
-                        </th>
-                        <th>
-                            speed
-                        </th>
-                        <th>
-                            targetTemp
-                        </th>
-                        <th>
-                            timeToWait
-                        </th>
-                    </tr>
+                        <tr>
+                            <th>
+                                acId
+                            </th>
+                            <th>
+                                speed
+                            </th>
+                            <th>
+                                targetTemp
+                            </th>
+                            <th>
+                                timeToWait
+                            </th>
+                        </tr>
                     </thead>
                     <tbody>
-                    <tr>
-                        <td>
-                            0
-                        </td>
-                        <td>
+                        <tr>
+                            <td>
+                                0
+                            </td>
+                            <td>
 
-                        </td>
-                        <td>
+                            </td>
+                            <td>
 
-                        </td>
-                        <td>
+                            </td>
+                            <td>
 
-                        </td>
-                    </tr>
-                    <tr class="success">
-                        <td>
-                            1
-                        </td>
-                        <td>
+                            </td>
+                        </tr>
+                        <tr class="success">
+                            <td>
+                                1
+                            </td>
+                            <td>
 
-                        </td>
-                        <td>
+                            </td>
+                            <td>
 
-                        </td>
-                        <td>
+                            </td>
+                            <td>
 
-                        </td>
-                    </tr>
-                    <tr class="error">
-                        <td>
-                            2
-                        </td>
-                        <td>
+                            </td>
+                        </tr>
+                        <tr class="error">
+                            <td>
+                                2
+                            </td>
+                            <td>
 
-                        </td>
-                        <td>
+                            </td>
+                            <td>
 
-                        </td>
-                        <td>
+                            </td>
+                            <td>
 
-                        </td>
-                    </tr>
-                    <tr class="warning">
-                        <td>
-                            3
-                        </td>
-                        <td>
+                            </td>
+                        </tr>
+                        <tr class="warning">
+                            <td>
+                                3
+                            </td>
+                            <td>
 
-                        </td>
-                        <td>
+                            </td>
+                            <td>
 
-                        </td>
-                        <td>
+                            </td>
+                            <td>
 
-                        </td>
-                    </tr>
-                    <tr class="info">
-                        <td>
-                            4
-                        </td>
-                        <td>
+                            </td>
+                        </tr>
+                        <tr class="info">
+                            <td>
+                                4
+                            </td>
+                            <td>
 
-                        </td>
-                        <td>
+                            </td>
+                            <td>
 
-                        </td>
-                        <td>
+                            </td>
+                            <td>
 
-                        </td>
-                    </tr>
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
@@ -561,92 +654,92 @@
                 <p><strong>queueL</strong></p>
                 <table id="L" class="table">
                     <thead>
-                    <tr>
-                        <th>
-                            acId
-                        </th>
-                        <th>
-                            speed
-                        </th>
-                        <th>
-                            targetTemp
-                        </th>
-                        <th>
-                            timeToWait
-                        </th>
-                    </tr>
+                        <tr>
+                            <th>
+                                acId
+                            </th>
+                            <th>
+                                speed
+                            </th>
+                            <th>
+                                targetTemp
+                            </th>
+                            <th>
+                                timeToWait
+                            </th>
+                        </tr>
                     </thead>
                     <tbody>
-                    <tr>
-                        <td>
-                            0
-                        </td>
-                        <td>
+                        <tr>
+                            <td>
+                                0
+                            </td>
+                            <td>
 
-                        </td>
-                        <td>
+                            </td>
+                            <td>
 
-                        </td>
-                        <td>
+                            </td>
+                            <td>
 
-                        </td>
-                    </tr>
-                    <tr class="success">
-                        <td>
-                            1
-                        </td>
-                        <td>
+                            </td>
+                        </tr>
+                        <tr class="success">
+                            <td>
+                                1
+                            </td>
+                            <td>
 
-                        </td>
-                        <td>
+                            </td>
+                            <td>
 
-                        </td>
-                        <td>
+                            </td>
+                            <td>
 
-                        </td>
-                    </tr>
-                    <tr class="error">
-                        <td>
-                            2
-                        </td>
-                        <td>
+                            </td>
+                        </tr>
+                        <tr class="error">
+                            <td>
+                                2
+                            </td>
+                            <td>
 
-                        </td>
-                        <td>
+                            </td>
+                            <td>
 
-                        </td>
-                        <td>
+                            </td>
+                            <td>
 
-                        </td>
-                    </tr>
-                    <tr class="warning">
-                        <td>
-                            3
-                        </td>
-                        <td>
+                            </td>
+                        </tr>
+                        <tr class="warning">
+                            <td>
+                                3
+                            </td>
+                            <td>
 
-                        </td>
-                        <td>
+                            </td>
+                            <td>
 
-                        </td>
-                        <td>
+                            </td>
+                            <td>
 
-                        </td>
-                    </tr>
-                    <tr class="info">
-                        <td>
-                            4
-                        </td>
-                        <td>
+                            </td>
+                        </tr>
+                        <tr class="info">
+                            <td>
+                                4
+                            </td>
+                            <td>
 
-                        </td>
-                        <td>
+                            </td>
+                            <td>
 
-                        </td>
-                        <td>
+                            </td>
+                            <td>
 
-                        </td>
-                    </tr>
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
@@ -654,4 +747,5 @@
 
     </div>
 </body>
+
 </html>

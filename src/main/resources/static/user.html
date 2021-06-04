@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>user</title>
@@ -7,52 +8,53 @@
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.2/dist/jquery.min.js"></script>
     <script src="https://cdn.staticfile.org/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
 </head>
+
 <body onload="load()" onload="clock()">
 
-<div class="container">
-    <div class="row clearfix">
-        <div class="col-md-12 column">
-            <div class="jumbotron"  style="background: darkseagreen;">
-                <h1 style="text-align: center">
-                    当前房间号：<span id="roomID"></span>
-                </h1>
-                <h2 style="text-align: right">
-                    clock：<span id="clock"></span>
-                </h2>
+    <div class="container">
+        <div class="row clearfix">
+            <div class="col-md-12 column">
+                <div class="jumbotron" style="background: darkseagreen;">
+                    <h1 style="text-align: center">
+                        当前房间号：<span id="roomID"></span>
+                    </h1>
+                    <h2 style="text-align: right">
+                        clock：<span id="clock"></span>
+                    </h2>
+                </div>
             </div>
         </div>
-    </div>
-    <div class="row clearfix">
-        <div class="col-md-6 column">
-            <div class="panel panel-success">
-                <div class="panel-heading">
-                    <h3 class="panel-title"  style="text-align: center; font-size:40px;">
-                        遥控器
-                    </h3>
-                </div>
-                <div class="panel-body" style="font-size:30px;">
-                    <button type="button" class="btn btn-lg btn-success btn-block" id="changeState" onclick="changeOnOff()">ON/OFF</button>
-                    <div class="input"></div>
-                </div>
-                <div class="panel-body" style="font-size:30px;">
-                    目标风速：
-                    <select onchange="detail(this)" id="aimspeed">
+        <div class="row clearfix">
+            <div class="col-md-6 column">
+                <div class="panel panel-success">
+                    <div class="panel-heading">
+                        <h3 class="panel-title" style="text-align: center; font-size:40px;">
+                            遥控器
+                        </h3>
+                    </div>
+                    <div class="panel-body" style="font-size:30px;">
+                        <button type="button" class="btn btn-lg btn-success btn-block" id="changeState" onclick="changeOnOff()">ON/OFF</button>
+                        <div class="input"></div>
+                    </div>
+                    <div class="panel-body" style="font-size:30px;">
+                        目标风速：
+                        <select onchange="detail(this)" id="aimspeed">
                         <option value="0">低风</option>
                         <option selected="selected" value="1">中风</option>
                         <option value="2">高风</option>
                     </select>
-                </div>
-<!--                <div class="panel-body" style="font-size:30px;">-->
-<!--                    模式：-->
-<!--                    <select onchange="detail(this)" id="aimmode">-->
-<!--                        <option value="1">制冷</option>-->
-<!--                        <option value="1">制热</option>-->
-<!--                        <option value="1">缺省</option>-->
-<!--                    </select>-->
-<!--                </div>-->
-                <div class="panel-body" style="font-size:30px;">
-                    目标温度：
-                    <select onchange="detail(this)" id="aimtemp">
+                    </div>
+                    <!--                <div class="panel-body" style="font-size:30px;">-->
+                    <!--                    模式：-->
+                    <!--                    <select onchange="detail(this)" id="aimmode">-->
+                    <!--                        <option value="1">制冷</option>-->
+                    <!--                        <option value="1">制热</option>-->
+                    <!--                        <option value="1">缺省</option>-->
+                    <!--                    </select>-->
+                    <!--                </div>-->
+                    <div class="panel-body" style="font-size:30px;">
+                        目标温度：
+                        <select onchange="detail(this)" id="aimtemp">
                         <option value="18">18</option>
                         <option value="19">19</option>
                         <option value="20">20</option>
@@ -68,61 +70,60 @@
                         <option value="30">30</option>
                     </select>
 
-                </div>
-                <div class="panel-footer" style="font-size:30px;">
-<!--                    <button type="button" class="btn btn-lg btn-success btn-block" onclick="windAndTemp()">确定</button>-->
-                </div>
-            </div>
-        </div>
-        <div class="col-md-6 column">
-            <div class="panel panel-success">
-                <div class="panel-heading">
-                    <h3 class="panel-title"  style="text-align: center;font-size:40px;">
-                        空调状态
-                    </h3>
-                </div>
-                <div class="panel-body" style="font-size:30px;">
-                    开关：<span id="state">关</span>
-                    <div class="input"></div>
-                </div>
-                <div class="panel-body" style="font-size:30px;">
-                    当前风速：
-                    <span id="speed"></span>
-                </div>
-                <div class="panel-body" style="font-size:30px;">
-                    模式：
-                    <span id="mode"></span>
-                </div>
-                <div class="panel-body" style="font-size:30px;">
-                    当前温度：
-                    <span id="currentTemperature"></span>
-                </div>
-                <div class="panel-body" style="font-size:30px;">
-                    目标温度：
-                    <span id="targetTemperature"></span>
-                </div>
-                <div class="panel-footer" style="font-size:30px;">
-                    应缴纳金额:
-                    <span id="fee"></span>
+                    </div>
+                    <div class="panel-footer" style="font-size:30px;">
+                        <!--                    <button type="button" class="btn btn-lg btn-success btn-block" onclick="windAndTemp()">确定</button>-->
+                    </div>
                 </div>
             </div>
-        </div>
+            <div class="col-md-6 column">
+                <div class="panel panel-success">
+                    <div class="panel-heading">
+                        <h3 class="panel-title" style="text-align: center;font-size:40px;">
+                            空调状态
+                        </h3>
+                    </div>
+                    <div class="panel-body" style="font-size:30px;">
+                        开关：<span id="state">关</span>
+                        <div class="input"></div>
+                    </div>
+                    <div class="panel-body" style="font-size:30px;">
+                        当前风速：
+                        <span id="speed"></span>
+                    </div>
+                    <div class="panel-body" style="font-size:30px;">
+                        模式：
+                        <span id="mode"></span>
+                    </div>
+                    <div class="panel-body" style="font-size:30px;">
+                        当前温度：
+                        <span id="currentTemperature"></span>
+                    </div>
+                    <div class="panel-body" style="font-size:30px;">
+                        目标温度：
+                        <span id="targetTemperature"></span>
+                    </div>
+                    <div class="panel-footer" style="font-size:30px;">
+                        应缴纳金额:
+                        <span id="fee"></span>
+                    </div>
+                </div>
+            </div>
 
-        <div class="row clearfix">
-            <div class="col-md-4 column">
-            </div>
-            <div class="col-md-4 column">
+            <div class="row clearfix">
+                <div class="col-md-4 column">
+                </div>
+                <div class="col-md-4 column">
 
+                </div>
+                <div class="col-md-4 column">
+                    <button type="button" class="btn btn-default btn-block " style="padding: 15px 25px;
+            background: darkseagreen;text-align: center;font-size:40px;" onclick="checkout()">退房</button>
+                </div>
             </div>
-            <div class="col-md-4 column">
-                <button type="button" class="btn btn-default btn-block " style="padding: 15px 25px;
-            background: darkseagreen;text-align: center;font-size:40px;"
-                onclick="checkout()">退房</button>
-            </div>
+
         </div>
-
     </div>
-</div>
 
 </body>
 
@@ -130,9 +131,9 @@
     // acId = $.cookie('roomID');
 
     var url = location.search; //获取url中"?"符后的字串
-    if (url.indexOf("?") != -1) {    //判断是否有参数
+    if (url.indexOf("?") != -1) { //判断是否有参数
         var str = url.substr(1); //从第一个字符开始 因为第0个是?号 获取所有除问号的所有符串
-        strs = str.split("=");   //用等号进行分隔 （因为知道只有一个参数 所以直接用等号进分隔 如果有多个参数 要用&号分隔 再用等号进行分隔）
+        strs = str.split("="); //用等号进行分隔 （因为知道只有一个参数 所以直接用等号进分隔 如果有多个参数 要用&号分隔 再用等号进行分隔）
         // alert(strs[1]);          //直接弹出第一个参数 （如果有多个参数 还要进行循环的）
     }
 
@@ -145,60 +146,46 @@
     var deTemp = 18;
     var haveon = 0;
 
-    function load()
-    {
+    function load() {
         document.getElementById("roomID").innerHTML = acId;
         // cTempt = prompt('请输入当前温度','25');
         document.getElementById("currentTemperature").innerHTML = cTempt;
     }
 
-    var int=self.setInterval("clock()",1000);
+    var int = self.setInterval("clock()", 1000);
 
-    function clock()
-    {
-        var d=new Date();
-        var t=d.toLocaleTimeString();
+    function clock() {
+        var d = new Date();
+        var t = d.toLocaleTimeString();
         document.getElementById("clock").innerHTML = t;
         getAirState();
     }
-    
+
     function getAirState() {
         $.ajax({
-            url:"http://119.3.212.133:20002/ac/state",
-            type:"GET",
-            data:{
-                "acId":acId
+            url: "http://119.3.212.133:20002/ac/state",
+            type: "GET",
+            data: {
+                "acId": acId
             },
-            success:function(result){
+            success: function(result) {
                 // alert("getState success");
-                if (result.code== 200)
-                {
-                    if ((result.result.state == 1)||(result.result.state == 3))
-                    {
+                if (result.code == 200) {
+                    if ((result.result.state == 1) || (result.result.state == 3)) {
                         document.getElementById("state").innerHTML = "开";
-                    }
-                    else if (result.result.state == 2)
-                    {
+                    } else if (result.result.state == 2) {
                         document.getElementById("state").innerHTML = "关";
                     }
-                    if (result.result.mode == 0)
-                    {
+                    if (result.result.mode == 0) {
                         document.getElementById("mode").innerHTML = "制冷";
-                    }
-                    else if (result.result.mode == 1)
-                    {
+                    } else if (result.result.mode == 1) {
                         document.getElementById("mode").innerHTML = "制热";
                     }
-                    if (result.result.speed == 0)
-                    {
+                    if (result.result.speed == 0) {
                         document.getElementById("speed").innerHTML = "低风";
-                    }
-                    else if (result.result.speed == 1)
-                    {
+                    } else if (result.result.speed == 1) {
                         document.getElementById("speed").innerHTML = "中风";
-                    }
-                    else if (result.result.speed == 2)
-                    {
+                    } else if (result.result.speed == 2) {
                         document.getElementById("speed").innerHTML = "高风";
                     }
                     document.getElementById("currentTemperature").innerHTML = result.result.currentTemperature;
@@ -207,7 +194,7 @@
                     cTempt = result.result.currentTemperature;
                 }
             },
-            error:function(jqXHR,textStatus,errorThrown){
+            error: function(jqXHR, textStatus, errorThrown) {
                 alert("getState error");
             }
         })
@@ -218,26 +205,19 @@
         // alert("detail:" + selectItem);
         // document.getElementById('iden').value =selectItem;
         console.log(selectItem);
-        if (selectItem == "高风")
-        {
+        if (selectItem == "高风") {
             // alert(selectItem);
             deWind = 2;
             changeWind();
-        }
-        else if (selectItem == "中风")
-        {
+        } else if (selectItem == "中风") {
             // alert(selectItem);
             deWind = 1;
             changeWind();
-        }
-        else if (selectItem == "低风")
-        {
+        } else if (selectItem == "低风") {
             // alert(selectItem);
             deWind = 0;
             changeWind();
-        }
-        else
-        {
+        } else {
             // alert(selectItem);
             deTemp = selectItem;
             changeTemp();
@@ -247,21 +227,20 @@
 
     function changeWind() {
         $.ajax({
-            url:"http://119.3.212.133:20002/ac/adjust",
-            type:"GET",
-            data:{
-                "acId":acId,
-                "deWind":deWind,
-                "deTemp":-1
+            url: "http://119.3.212.133:20002/ac/adjust",
+            type: "GET",
+            data: {
+                "acId": acId,
+                "deWind": deWind,
+                "deTemp": -1
             },
-            success:function(result){
+            success: function(result) {
                 // alert("adjust success");
-                if (result.code== 200)
-                {
+                if (result.code == 200) {
 
                 }
             },
-            error:function(jqXHR,textStatus,errorThrown){
+            error: function(jqXHR, textStatus, errorThrown) {
                 alert("adjust error");
             }
         })
@@ -269,21 +248,20 @@
 
     function changeTemp() {
         $.ajax({
-            url:"http://119.3.212.133:20002/ac/adjust",
-            type:"GET",
-            data:{
-                "acId":acId,
-                "deWind":-1,
-                "deTemp":deTemp
+            url: "http://119.3.212.133:20002/ac/adjust",
+            type: "GET",
+            data: {
+                "acId": acId,
+                "deWind": -1,
+                "deTemp": deTemp
             },
-            success:function(result){
+            success: function(result) {
                 // alert("adjust success");
-                if (result.code== 200)
-                {
+                if (result.code == 200) {
 
                 }
             },
-            error:function(jqXHR,textStatus,errorThrown){
+            error: function(jqXHR, textStatus, errorThrown) {
                 alert("adjust error");
             }
         })
@@ -291,71 +269,63 @@
 
     function changeOnOff() {
         state = document.getElementById('state').innerHTML;
-        if (state == "关")
-        {
+        if (state == "关") {
             turnOn();
-        }
-        else
-        {
+        } else {
             turnOff();
         }
     }
 
-    function turnOn()
-    {
-        if (haveon == 0)
-        {
-            cTempt = prompt('请输入当前温度','25');
+    function turnOn() {
+        if (haveon == 0) {
+            cTempt = prompt('请输入当前温度', '25');
             haveon = 1;
         }
 
         $.ajax({
-            url:"http://119.3.212.133:20002/ac/start",
-            type:"GET",
-            data:{
-                "acId":acId,
-            "cTempt":cTempt
-        },
-        success:function(result){
-            alert("success");
-            if (result.code== 200)
-            {
+            url: "http://119.3.212.133:20002/ac/start",
+            type: "GET",
+            data: {
+                "acId": acId,
+                "cTempt": cTempt
+            },
+            success: function(result) {
+                alert("success");
+                if (result.code == 200) {
 
+                }
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                alert("error");
             }
-        },
-        error:function(jqXHR,textStatus,errorThrown){
-            alert("error");
-        }
-    })
+        })
     }
 
     function turnOff() {
         // alert(document.getElementById('aimspeed').value);
-        document.getElementById('aimspeed').value= "1";
-        document.getElementById('aimtemp').value= "25";
+        document.getElementById('aimspeed').value = "1";
+        document.getElementById('aimtemp').value = "25";
         // alert("恢复默认值");
 
 
         $.ajax({
-            url:"http://119.3.212.133:20002/ac/shutdown",
-            type:"GET",
-            data:{
-                "acId":acId
+            url: "http://119.3.212.133:20002/ac/shutdown",
+            type: "GET",
+            data: {
+                "acId": acId
             },
-            success:function(result){
+            success: function(result) {
                 alert("success");
             },
-            error:function(jqXHR,textStatus,errorThrown){
+            error: function(jqXHR, textStatus, errorThrown) {
                 alert("error");
             }
         })
     }
 
     function checkout() {
-        window.location.href = 'http://119.3.212.133:20002/detailList.html'+'?index='+acId;
+        window.location.href = './detailList.html' + '?index=' + acId;
     }
-
-
 </script>
 
 </html>
